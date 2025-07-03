@@ -61,20 +61,19 @@ function App() {
 	}, []);
 
 	return (
-		<><div style={{ fontSize: '2rem', textAlign: 'center' }}>
+		<>
+			<div style={{ fontSize: '2rem', textAlign: 'center' }}>
 				{isWinner && 'Winner! - Refresh to try again'}
 				{isLoser && 'Nice Try - Refresh to try again'}
 			</div>
-			
-			<div
-				style={{
+
+			<div style={{
 					display: 'flex',
 					gap: '5rem',
 					margin: '0 auto',
 					padding: '4rem',
 					justifyContent: 'center'
-				}}
-			>
+				}}>
 				<HangmanDrawing numberOfGuesses={inCorrectLetters.length} />
 				<div
 					style={{
