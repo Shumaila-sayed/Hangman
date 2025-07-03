@@ -15,10 +15,10 @@ function App() {
 		(letter) => !wordToGuess.includes(letter)
 	);
 
-	const isLoser = inCorrectLetters.length >= 6
-	const isWinner = wordToGuess.split("").every(letter => guessedLetters.includes(letter))
-
-
+	const isLoser = inCorrectLetters.length >= 6;
+	const isWinner = wordToGuess
+		.split('')
+		.every((letter) => guessedLetters.includes(letter));
 
 	const addGuessedLetter = useCallback(
 		(letter: string) => {
@@ -48,52 +48,62 @@ function App() {
 		const handler = (e: KeyboardEvent) => {
 			const key = e.key;
 
-			if (key !== "Enter") return;
-			e.preventDefault()
-			setGuessedLetter([])
-			setWordToGuess(getWord())
+			if (key !== 'Enter') return;
+			e.preventDefault();
+			setGuessedLetter([]);
+			setWordToGuess(getWord());
 		};
 		document.addEventListener('keypress', handler);
 
 		return () => {
 			document.removeEventListener('keypress', handler);
 		};
-	}, [])
+	}, []);
 
 	return (
-		<div
-			style={{
-				maxWidth: '800px',
-				display: 'flex',
-				flexDirection: 'column',
-				gap: '2rem',
-				margin: '0 auto',
-				alignItems: 'center',
-			}}
-		>
-			<div style={{ fontSize: '2rem', textAlign: 'center' }}>
+		<><div style={{ fontSize: '2rem', textAlign: 'center' }}>
 				{isWinner && 'Winner! - Refresh to try again'}
 				{isLoser && 'Nice Try - Refresh to try again'}
 			</div>
+			
+			<div
+				style={{
+					display: 'flex',
+					gap: '5rem',
+					margin: '0 auto',
+					padding: '4rem',
+					justifyContent: 'center'
+				}}
+			>
+				<HangmanDrawing numberOfGuesses={inCorrectLetters.length} />
+				<div
+					style={{
+						display: 'flex',
+						flexDirection: 'column',
+						gap: '2rem',
+						minWidth: '50vw',
+						alignItems: 'center',
+					}}
+				>
+					<HangmanWord
+						reveal={isLoser}
+						guessedLetters={guessedLetters}
+						wordToGuess={wordToGuess}
+					/>
 
-			<HangmanDrawing numberOfGuesses={inCorrectLetters.length} />
-			<HangmanWord
-				reveal={isLoser}
-				guessedLetters={guessedLetters}
-				wordToGuess={wordToGuess}
-			/>
-
-			<div style={{ alignSelf: 'stretch' }}>
-				<Keyboard
-					disabled={isWinner || isLoser}
-					activeLetters={guessedLetters.filter((letter) =>
-						wordToGuess.includes(letter)
-					)}
-					inactiveLetters={inCorrectLetters}
-					addGuessedLetters={addGuessedLetter}
-				/>
+					<div style={{ alignSelf: 'stretch' }}>
+						<Keyboard
+							disabled={isWinner || isLoser}
+							activeLetters={guessedLetters.filter((letter) =>
+								wordToGuess.includes(letter)
+							)}
+							inactiveLetters={inCorrectLetters}
+							addGuessedLetters={addGuessedLetter}
+						/>
+					</div>
+				</div>
 			</div>
-		</div>
+		</>
 	);
 }
 
